@@ -1,0 +1,101 @@
+echo "$HOME/.vimperatorrc loading ..."
+
+set verbose 15
+
+" let
+let mapleader = ","
+
+" カラースキーム
+colorscheme solarized_dark
+" キャレットの太さを変更する
+set! ui.caretWidth=10
+" URL(と検索語)、Firefoxの履歴、ローカルファイルで自動補完を行ふ。
+set complete=slf
+" エディタを指定する。
+set editor="gvim -f"
+" 頁を開く際に入力欄にフォーカスしない。
+set focuscontent
+" メニューバー(Menubar)だけ表示する。
+set gui=addons,nobookmarks,nomenu,navigation,tabs
+" 頁全体で検索語を強調表示する。
+set hlsearch
+" 検索時に大文字・小文字を無視する。
+set ignorecase
+" exコマンドで新しい頁を開く際、常に新しいタブで開く。
+set newtab=all
+" exモード時にタイプ中でも自動補完する。
+set wildmode="list:full"
+
+" ステータスバーの背景色をグレーにする。
+"hi StatusLine color:black; background:#BBB; font-weight:normal;
+" 補完候補の文字色を変更する。
+"hi CompDesc color:#272; width:50%;
+"hi Preview color:#44C;
+" ヒント表示を變更する。(Vimperatorスレ304)
+hi Hint <<EOC
+    background-color : khaki;
+    border-color     : ButtonShadow;
+    border-radius    : 8px;
+    border-style     : solid;
+    border-width     : 0px;
+    color            : #0F0F0F;
+    font-family      : Menlo, Consolas, Monaco, monospace;
+    font-size        : 16px;
+    font-weight      : bold;
+    opacity          : 0.6;
+    padding          : 0px 2px 0px 2px;
+    position         : absolute;
+    text-transform   : uppercase;
+    z-index          : 2147483647;
+EOC
+" ヒント文字列を変更する。(Vimperatorスレ301)
+set hintchars=qxcvl@;:/.
+
+" コマンドラインでIMEをオフ
+" http://vimperator.g.hatena.ne.jp/teramako/20090311/1236776437
+style -name commandline-ime chrome://* #liberator-commandline-command input {ime-mode: inactive;}
+
+" http://zentoo.hatenablog.com/entry/20111009/1318148524
+js <<EOM
+hints.addMode('i', 'firebug inspect hint', function(elem){
+    Firebug.toggleBar(true);
+    Firebug.chrome.select(elem);
+}, function() '//*');
+EOM
+
+" vimppm
+" https://github.com/cd01/vimppm
+source ~/.vimperator/vimppm/plugin/vimppm.js
+
+" from Vimpr
+vimppm '_smooziee.js'
+vimppm 'caret-hint.js'
+vimppm 'copy.js'
+vimppm 'feedSomeKeys_3.js'
+
+" キーマップ
+" nmap ノーマルモード
+" imap インサートモード
+" vmap ビジュアルモード
+" cmap コマンドモード
+" omap オペレータ待機モード
+" mapでなくnoremap使う
+
+" copy.js
+" <C-S-y>でタイトルをコピー
+" http://oflow.me/archives/tag/vimperator
+noremap <C-S-y> :copy titleAndURL<CR>
+
+" feedSomeKeys_3.js
+command! -nargs=+ lazy autocmd VimperatorEnter .* &lt;args>
+lazy fmaps -u='(fastladder|livedoor)\.com/reader' j k s a p o v c i,p &lt;Space> &lt;S-Space> z b &lt; > q w e,g
+lazy fmaps -u='http://code.google.com/p/vimperator-labs/issues/detail' u
+lazy fmaps -u='http://code.google.com/p/vimperator-labs/issues/list' o j k
+lazy fmaps -u='https?://www\.rememberthemilk\.com/home/' j k m i c t ? d F,f G,g S,s L,l Y,y H,h M,m &lt;Del> &lt;C-S-Left> &lt;C-S-Right>
+lazy fmaps -u='mail\.google\.com/mail' c / j k n p o u e x s r a # [ ] ? gi gs gt gd ga gc
+lazy fmaps -u='mail\.google\.com/mail/.*/[0-9a-f]+$' c / j,n k,p n,j p,k o u e x s r a # [ ] ? gi gs gt gd ga gc
+lazy fmaps -u='www\.google\.co\.jp/reader' -events=vkeypress j k n p m s v A r S N P X O gh ga gs gt gu u / ? J K
+
+echo "$HOME/.vimperatorrc loaded"
+
+" vim: set ft=vimperator:
