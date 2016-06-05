@@ -65,7 +65,11 @@ EOM
 
 " vimppm
 " https://github.com/cd01/vimppm
-source ~/.vimperator/vimppm/plugin/vimppm.js
+if (liberator.has('Win32')) {
+    source ~/vimperator/vimppm/plugin/vimppm.js
+} else {
+    source ~/.vimperator/vimppm/plugin/vimppm.js
+}
 
 " from Vimpr
 vimppm '_smooziee.js'
